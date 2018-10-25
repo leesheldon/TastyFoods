@@ -1,0 +1,55 @@
+﻿@model IEnumerable<TastyFood.Models.Coupon>
+
+    @{
+        ViewData["Title"] = "Index";
+    }
+
+    <h2>Index</h2>
+
+    <p>
+        @Html.Partial("_CreateButtonPartial")
+    </p>
+    <div class="form-border">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Discount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MinimumAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.isActive)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Discount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MinimumAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.isActive)
+                    </td>
+                    <td>
+                        @Html.Partial("_TableButtonPartialNoDetails", item.Id)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+

@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20181024031033_AddMenuItemModel.cs" />
     <Compile Remove="Data\Migrations\20181024031033_AddMenuItemModel.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181025035754_AddCouponModel.cs" />
+    <Compile Remove="Data\Migrations\20181025035754_AddCouponModel.Designer.cs" />
   </ItemGroup>
 
 

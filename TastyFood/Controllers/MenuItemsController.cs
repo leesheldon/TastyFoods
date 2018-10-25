@@ -41,13 +41,13 @@ namespace TastyFood.Controllers
             return View(await menuItems.ToListAsync());
         }
 
-        // GET MenuItems Create
+        // GET Create MenuItems
         public IActionResult Create()
         {
             return View(MenuItemVM);
         }
         
-        // POST MenuItems Create
+        // POST Create MenuItems
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateNewItem()
@@ -111,7 +111,7 @@ namespace TastyFood.Controllers
             return Json(new SelectList(subCategoriesList, "Id", "Name"));
         }
 
-        // GET MenuItems Edit
+        // GET Edit MenuItems
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -136,7 +136,7 @@ namespace TastyFood.Controllers
             return View(MenuItemVM);
         }
 
-        // POST MenuItems Edit
+        // POST Edit MenuItems
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id)
@@ -215,7 +215,7 @@ namespace TastyFood.Controllers
             return View(MenuItemVM);
         }
 
-        // GET MenuItems Details
+        // GET Details MenuItems
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -242,7 +242,7 @@ namespace TastyFood.Controllers
             return View(MenuItemVM);
         }
 
-        // GET MenuItems Delete
+        // GET Delete MenuItems
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -269,7 +269,7 @@ namespace TastyFood.Controllers
             return View(MenuItemVM);
         }
 
-        // POST MenuItems Delete
+        // POST Delete MenuItems
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
