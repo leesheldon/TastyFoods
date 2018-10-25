@@ -4,34 +4,41 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TastyFood.Data;
 using TastyFood.Models;
+using TastyFood.Models.HomeViewModels;
 
 namespace TastyFood.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _db;
+
+        public HomeController(ApplicationDbContext db)
         {
-            return View();
+            _db = db;
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> Index()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
+            IndexViewModel IndexVM = new IndexViewModel
+            {
+                MenuItem = await _db.MenuItem
+                    .Include(p => p.Category)
+                    .Include(p => p.SubCategory)
+                    .ToListAsync(),
+                Category = _db.Category.OrderBy(p => p.DisplayOrder),
+                Coupons = _db.Coupon
+                    .Where(p => p.isActive == true).ToList()
+            };
+            return View(IndexVM);
+        }        
 
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

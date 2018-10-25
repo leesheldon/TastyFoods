@@ -1,4 +1,55 @@
-﻿@{
+﻿@model TastyFood.Models.HomeViewModels.IndexViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<br />
+@if (Model.Coupons.ToList().Count > 0)
+{
+    <div class="container border">
+        <div class="carousel" data-ride="carousel" data-interval="2500">
+            @for (int i = 0; i < Model.Coupons.Count(); i++)
+            {
+                if (i == 0)
+                {
+                    <div class="carousel-item active">
+                        @{
+                            var imgSrc = "";
+                            if (Model.Coupons.ToList()[i].Picture != null)
+                            {
+                                var base64 = Convert.ToBase64String(Model.Coupons.ToList()[i].Picture);
+                                imgSrc = string.Format("data:image/jpg;base64,{0}", base64);
+                            }
+                        }
+
+                        <img src="@imgSrc" class="d-block w-100" style="height: 50px;" />
+                    </div>
+                }
+                else
+                {
+                    <div class="carousel-item">
+                        @{
+                            var imgSrc = "";
+                            if (Model.Coupons.ToList()[i].Picture != null)
+                            {
+                                var base64 = Convert.ToBase64String(Model.Coupons.ToList()[i].Picture);
+                                imgSrc = string.Format("data:image/jpg;base64,{0}", base64);
+                            }
+                        }
+
+                        <img src="@imgSrc" class="d-block w-100" style="height: 50px;" />
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
+
+@foreach(var category in Model.Category)
+{
+    <h3 class="text-success">@category.Name</h3>
+    <div class="row" style="padding-bottom:50px;">
+        @Html.Partial("_ThumbnailAreaPartial", Model.MenuItem.Where(p => p.Category.Name.Equals(category.Name)))
+    </div>
+}
