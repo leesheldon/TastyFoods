@@ -23,5 +23,7 @@ namespace TastyFood.Models
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
 
+        public ICollection<MenuItem> MenuItems { get; set; }
+
     }
 }

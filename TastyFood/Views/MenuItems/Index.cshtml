@@ -1,17 +1,19 @@
-﻿@model IEnumerable<TastyFood.Models.SubCategory>
+﻿@model IEnumerable<TastyFood.Models.MenuItem>
 @{
     ViewData["Title"] = "Index";
 }
 
 <br />
-<h2>Sub Categories List</h2>
+<h2>Menu Item List</h2>
 <br />
 @Html.Partial("_CreateButtonPartial")
 <div class="form-border">
     <table class="table">
         <tr>
             <th>@Html.DisplayNameFor(p => p.Name)</th>
-            <th>@Html.DisplayNameFor(p => p.Category.Name)</th>
+            <th>@Html.DisplayNameFor(p => p.Price)</th>
+            <th>@Html.DisplayNameFor(p => p.CategoryId)</th>
+            <th>@Html.DisplayNameFor(p => p.SubCategoryId)</th>            
             <th></th>
             <th></th>
         </tr>
@@ -19,7 +21,9 @@
         {
         <tr>
             <td>@Html.DisplayFor(p => item.Name)</td>
+            <td>@Html.DisplayFor(p => item.Price)</td>
             <td>@Html.DisplayFor(p => item.Category.Name)</td>
+            <td>@Html.DisplayFor(p => item.SubCategory.Name)</td>
             <td>@Html.Partial("_TableButtonPartial", item.Id)</td>
         </tr>
         }

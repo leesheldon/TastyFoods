@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-TastyFood-D68F3222-E03E-4CEB-A97D-542D2942CCC0</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20181024031033_AddMenuItemModel.cs" />
+    <Compile Remove="Data\Migrations\20181024031033_AddMenuItemModel.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="4.0.0" />

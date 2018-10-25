@@ -14,10 +14,14 @@ namespace TastyFood.Models
         [Required]
         [Display(Name="Category Name")]
         public string Name { get; set; }
-
+        
         [Required]
         [Display(Name = "Display Order")]
         public int DisplayOrder { get; set; }
+
+        public ICollection<SubCategory> SubCategories { get; set; }
+
+        public ICollection<MenuItem> MenuItems { get; set; }
 
     }
 }
