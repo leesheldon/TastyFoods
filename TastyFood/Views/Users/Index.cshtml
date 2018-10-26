@@ -1,0 +1,63 @@
+﻿@model IEnumerable<TastyFood.Models.ApplicationUser>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Manage Users</h2>
+<br />
+<div class="form-border">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+                <th>@Html.DisplayNameFor(model => model.LastName)</th>
+                <th>@Html.DisplayNameFor(model => model.Email)</th>
+                <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var isLockedOut = await UserManager.IsLockedOutAsync(item);
+
+                <tr @(isLockedOut == true ? "style=color:red" : "style=color:black")>
+                    <td>
+                        @Html.DisplayFor(m => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.PhoneNumber)
+                    </td>
+                    <td>
+                        <a type="button" class="btn btn-primary"
+                           href="@Url.Action("Edit/" + item.Id)">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        @if (isLockedOut)
+                        {
+                            <a type="button" class="btn btn-success"
+                               href="@Url.Action("UnLock/" + item.Id)">
+                                <i class="fas fa-unlock"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a type="button" class="btn btn-danger"
+                               href="@Url.Action("Lock/" + item.Id)">
+                                <i class="fas fa-lock"></i>
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -11,9 +11,10 @@ using TastyFood.Data;
 namespace TastyFood.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181026015411_AddLockoutReasonToUsers")]
+    partial class AddLockoutReasonToUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,8 +169,6 @@ namespace TastyFood.Data.Migrations
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UnLockReason");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
