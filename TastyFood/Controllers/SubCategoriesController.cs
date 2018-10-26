@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TastyFood.Data;
 using TastyFood.Models;
 using TastyFood.Models.SubCategoryViewModels;
+using TastyFood.Utility;
 
 namespace TastyFood.Controllers
 {
+    [Authorize(Roles = SD.AdminEndUser)]
     public class SubCategoriesController : Controller
     {
         private readonly ApplicationDbContext _db;

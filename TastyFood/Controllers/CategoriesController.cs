@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TastyFood.Data;
 using TastyFood.Models;
+using TastyFood.Utility;
 
 namespace TastyFood.Controllers
 {
+    [Authorize(Roles = SD.AdminEndUser)]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -149,5 +152,6 @@ namespace TastyFood.Controllers
         {
             return _context.Category.Any(e => e.Id == id);
         }
+
     }
 }

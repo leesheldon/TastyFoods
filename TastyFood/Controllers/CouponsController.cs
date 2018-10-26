@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TastyFood.Data;
 using TastyFood.Models;
+using Microsoft.AspNetCore.Authorization;
+using TastyFood.Utility;
 
 namespace TastyFood.Controllers
 {
+    [Authorize(Roles = SD.AdminEndUser)]
     public class CouponsController : Controller
     {
         private readonly ApplicationDbContext _db;
