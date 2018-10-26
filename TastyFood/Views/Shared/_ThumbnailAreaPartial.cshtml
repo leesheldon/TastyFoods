@@ -31,14 +31,15 @@
                     </div>
                     <div class="row col-12 text-justify">
                         <p>@item.Description</p>
-                        <br />
+                    </div>
+                    <div class="row col-12 text-justify">
                         <a asp-action="Details" class="btn btn-success" asp-route-id="@item.Id">Details</a>
                     </div>
                 </div>
-                <div class="col-3">
-                    <img src="@item.Image" style="width:90%; border-radius: 5px; border:1px solid #bbb9b9;" />
+                    <div class="col-3">
+                        <img src="@item.Image" style="width:90%; border-radius: 5px; border:1px solid #bbb9b9;" />
+                    </div>
                 </div>
-            </div>
         </div>
     }
 }

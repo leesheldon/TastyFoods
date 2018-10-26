@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -72,6 +73,17 @@ namespace TastyFood.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
+                    // Set Cart's Session for new user
+                    var loggedInUser = _db.Users
+                            .Where(p => p.Email == model.Email)
+                            .FirstOrDefault();
+                    var numberOfCarts = _db.ShoppingCart
+                            .Where(p => p.ApplicationUserId == loggedInUser.Id)
+                            .ToList()
+                            .Count;
+                    HttpContext.Session.SetInt32("CountCarts", numberOfCarts);
+
+
                     _logger.LogInformation("User logged in.");
                     return RedirectToLocal(returnUrl);
                 }
@@ -265,6 +277,10 @@ namespace TastyFood.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
+
+                    // Set Cart's Session for new user
+                    HttpContext.Session.SetInt32("CountCarts", 0);
+
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

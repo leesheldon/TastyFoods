@@ -1,4 +1,6 @@
 ﻿@using TastyFood.Utility
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
 
 <!DOCTYPE html>
 <html>
@@ -65,11 +67,23 @@
 
                 @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.CustomerEndUser))
                 {
-                    <li style="color: white;">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-shopping-cart"></i>&nbsp;(0)
-                        </a>
-                    </li>
+                    @if (httpContextAccessor.HttpContext.Session.GetInt32("CountCarts") != null)
+                    {
+                        <li style="color: white;">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-shopping-cart"></i>&nbsp;(@httpContextAccessor.HttpContext.Session.GetInt32("CountCarts"))
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li style="color: white;">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-shopping-cart"></i>&nbsp;(0)
+                            </a>
+                        </li>
+                    }
+
                 }
             </ul>
         </div>
