@@ -262,11 +262,31 @@ namespace TastyFood.Controllers
                         await _roleManager.CreateAsync(new IdentityRole(SD.CustomerEndUser));
                     }
 
+                    if (!await _roleManager.RoleExistsAsync(SD.ManagerUser))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(SD.ManagerUser));
+                    }
+
+                    if (!await _roleManager.RoleExistsAsync(SD.StaffUser))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(SD.StaffUser));
+                    }
+
+                    if (!await _roleManager.RoleExistsAsync(SD.DelivererUser))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(SD.DelivererUser));
+                    }
+
+                    if (!await _roleManager.RoleExistsAsync(SD.NAUser))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(SD.NAUser));
+                    }
+
                     //// Add Admin Role to User
                     //await _userManager.AddToRoleAsync(user, SD.AdminEndUser);
 
-                    // Add Customer Role to User
-                    await _userManager.AddToRoleAsync(user, SD.CustomerEndUser);
+                    // Add Not Available Role to New User, then Administrator will assign appropriate role to them.
+                    await _userManager.AddToRoleAsync(user, SD.NAUser);
 
                     // =====================================
                     _logger.LogInformation("User created a new account with password.");

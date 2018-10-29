@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TastyFood.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.AspNetCore.Identity;
 
 namespace TastyFood.Data
-{
+{   
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -19,8 +20,8 @@ namespace TastyFood.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<SubCategory> SubCategory { get; set; }
         public DbSet<MenuItem> MenuItem { get; set; }
-        public DbSet<Coupon> Coupon { get; set; }
-        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<Coupon> Coupon { get; set; }        
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }        
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
 
 
@@ -29,7 +30,7 @@ namespace TastyFood.Data
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+            // Add your customizations after calling base.OnModelCreating(builder);            
 
             builder.Entity<SubCategory>()
                .HasOne<Category>(p => p.Category)

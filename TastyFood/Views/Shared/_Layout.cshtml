@@ -34,38 +34,54 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
 
-                @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.CustomerEndUser))
+                @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.CustomerEndUser) || User.IsInRole(SD.ManagerUser) || User.IsInRole(SD.StaffUser))
                 {
                     <li class="nav-item"><a class="nav-link" href="#">Order History</a></li>
                 }
 
-                @if (User.IsInRole(SD.AdminEndUser))
+                @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.ManagerUser))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Admin
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" asp-controller="Categories" asp-action="Index">Category</a>
-                            <a class="dropdown-item" asp-controller="SubCategories" asp-action="Index">Sub Category</a>
-                            <a class="dropdown-item" asp-controller="MenuItems" asp-action="Index">Menu Items</a>
-                            <a class="dropdown-item" asp-controller="Coupons" asp-action="Index">Coupons</a>
-                            <a class="dropdown-item" asp-controller="Users" asp-action="Index">Users</a>
+                            @if (User.IsInRole(SD.ManagerUser))
+                            {
+                                <a class="dropdown-item" asp-controller="Categories" asp-action="Index">Category</a>
+                                <a class="dropdown-item" asp-controller="SubCategories" asp-action="Index">Sub Category</a>
+                                <a class="dropdown-item" asp-controller="MenuItems" asp-action="Index">Menu Items</a>
+                                <a class="dropdown-item" asp-controller="Coupons" asp-action="Index">Coupons</a>
+                            }
+                            @if (User.IsInRole(SD.AdminEndUser))
+                            {
+                                <a class="dropdown-item" asp-controller="Users" asp-action="Index">Users</a>
+                            }
                         </div>
                     </li>
+                }
+
+                @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.CustomerEndUser) || User.IsInRole(SD.ManagerUser) || User.IsInRole(SD.StaffUser) || User.IsInRole(SD.DelivererUser))
+                {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Orders
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Manage Order</a>
-                            <a class="dropdown-item" href="#">Orders Pickup</a>
+                            @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.ManagerUser) || User.IsInRole(SD.StaffUser))
+                            {
+                                <a class="dropdown-item" href="#">Manage Order</a>
+                            }                            
+                            @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.DelivererUser) || User.IsInRole(SD.ManagerUser) || User.IsInRole(SD.StaffUser))
+                            {
+                                <a class="dropdown-item" href="#">Orders Pickup</a>
+                            }
                             <a class="dropdown-item" href="#">Download Order Details</a>
                         </div>
                     </li>
-                }
+                }                
 
-                @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.CustomerEndUser))
+                @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.CustomerEndUser) || User.IsInRole(SD.ManagerUser) || User.IsInRole(SD.StaffUser))
                 {
                     @if (httpContextAccessor.HttpContext.Session.GetInt32("CountCarts") != null)
                     {

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TastyFood.Data;
 using TastyFood.Models;
 using TastyFood.Services;
+using System.Globalization;
 
 namespace TastyFood
 {
@@ -29,7 +30,7 @@ namespace TastyFood
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(
+            IdentityBuilder builder = services.AddIdentity<ApplicationUser, IdentityRole>(            
                 options =>
                 {
                     options.Lockout.AllowedForNewUsers = true;
@@ -37,9 +38,18 @@ namespace TastyFood
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+           
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+
+            // Set Culture for Date
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-US");
+                options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("en-GB") };
+                options.RequestCultureProviders.Clear();
+            });
 
             services.AddMvc();
 
@@ -69,6 +79,8 @@ namespace TastyFood
             app.UseAuthentication();
 
             app.UseSession();
+
+            app.UseRequestLocalization();
 
             app.UseMvc(routes =>
             {

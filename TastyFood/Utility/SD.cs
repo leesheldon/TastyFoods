@@ -13,5 +13,13 @@ namespace TastyFood.Utility
 
         public const string CustomerEndUser = "Customer";
 
+        public const string ManagerUser = "Manager";
+
+        public const string StaffUser = "Staff";
+
+        public const string DelivererUser = "Deliverer";
+
+        public const string NAUser = "NA";
+
     }
 }

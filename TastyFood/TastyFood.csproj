@@ -10,6 +10,11 @@
     <Compile Remove="Data\Migrations\20181024031033_AddMenuItemModel.Designer.cs" />
     <Compile Remove="Data\Migrations\20181025035754_AddCouponModel.cs" />
     <Compile Remove="Data\Migrations\20181025035754_AddCouponModel.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181028092146_AddRoleAndUserRoleModels.cs" />
+    <Compile Remove="Data\Migrations\20181028092146_AddRoleAndUserRoleModels.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181028173948_AddApplicationRoleModel.cs" />
+    <Compile Remove="Data\Migrations\20181028173948_AddApplicationRoleModel.Designer.cs" />
+    <Compile Remove="Models\ApplicationUserRole.cs" />
   </ItemGroup>
 
 
