@@ -12,7 +12,7 @@ using TastyFood.Utility;
 
 namespace TastyFood.Controllers
 {
-    [Authorize(Roles = SD.AdminEndUser)]
+    [Authorize(Roles = SD.AdminEndUser + ", " + SD.ManagerUser)]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;

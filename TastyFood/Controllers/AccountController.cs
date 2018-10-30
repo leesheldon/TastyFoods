@@ -81,7 +81,7 @@ namespace TastyFood.Controllers
                             .Where(p => p.ApplicationUserId == loggedInUser.Id)
                             .ToList()
                             .Count;
-                    HttpContext.Session.SetInt32("CountCarts", numberOfCarts);
+                    HttpContext.Session.SetInt32(SD.SessionCountCarts, numberOfCarts);
 
 
                     _logger.LogInformation("User logged in.");
@@ -299,7 +299,7 @@ namespace TastyFood.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     // Set Cart's Session for new user
-                    HttpContext.Session.SetInt32("CountCarts", 0);
+                    HttpContext.Session.SetInt32(SD.SessionCountCarts, 0);
 
                     return RedirectToLocal(returnUrl);
                 }

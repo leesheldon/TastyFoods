@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using TastyFood.Data;
 using TastyFood.Models;
 using TastyFood.Models.HomeViewModels;
+using TastyFood.Utility;
 
 namespace TastyFood.Controllers
 {
@@ -73,7 +74,7 @@ namespace TastyFood.Controllers
                     .Where(p => p.ApplicationUserId == cart.ApplicationUserId && p.MenuItemId == cart.MenuItemId)
                     .FirstOrDefaultAsync();
 
-                if (cartFromDB ==null)
+                if (cartFromDB == null)
                 {
                     // This menu item does not exist
                     _db.ShoppingCart.Add(cart);
@@ -92,7 +93,7 @@ namespace TastyFood.Controllers
                         .Count;
 
                 // Set Cart's Session
-                HttpContext.Session.SetInt32("CountCarts", numberOfCarts);
+                HttpContext.Session.SetInt32(SD.SessionCountCarts, numberOfCarts);
 
 
                 return RedirectToAction(nameof(Index));
