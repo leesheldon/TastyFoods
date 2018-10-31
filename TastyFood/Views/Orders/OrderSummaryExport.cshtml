@@ -1,0 +1,75 @@
+﻿@model TastyFood.Models.OrderExportViewModels.OrderExportViewModel
+@{
+    ViewData["Title"] = "Order Summary Export";
+}
+
+<br />
+<h2>Download Orders Details</h2>
+<br />
+<div class="container border">
+    <h4 style="color: steelblue;"> Select Date range: </h4>
+    <br />
+    <form method="post">
+        <div class="row">
+            <div class="col-2">
+                <label asp-for="startDate" class="custom-label"></label>
+            </div>
+            <div class="col-6">
+                <input id="from" asp-for="@Model.startDate" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <label asp-for="endDate" class="custom-label"></label>
+            </div>
+            <div class="col-6">
+                <input id="to" asp-for="@Model.endDate" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="row" style="padding-top: 10px;">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <button type="submit" class="btn btn-primary form-control"><i class="fas fa-download"></i>&nbsp;Download</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts{ 
+    <script>
+        $(function () {
+            var dateFormat = "mm/dd/yy"
+            var from = $("#from").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                maxDate: "+0D"
+            })
+                .on("change", function () {
+                    to.datepicker("option", "minDate", getDate(this));
+                });
+
+            var to = $("#to").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                maxDate: "+0D"
+            })
+                .on("change", function () {
+                    from.datepicker("option", "maxDate", getDate(this));
+                });
+
+            function getDate(element) {
+                var date;
+                try {
+                    date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch (error) {
+                    date = null;
+                }
+
+                return date;
+            }
+        });
+        
+    </script>
+
+}

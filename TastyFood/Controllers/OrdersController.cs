@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TastyFood.Data;
 using TastyFood.Models;
 using TastyFood.Models.OrderDetailsViewModels;
+using TastyFood.Models.OrderExportViewModels;
 using TastyFood.Utility;
 
 namespace TastyFood.Controllers
@@ -237,6 +241,74 @@ namespace TastyFood.Controllers
 
             return RedirectToAction("OrderPickup", "Orders");
 
+        }
+
+        public IActionResult OrderSummaryExport(string orderId)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult OrderSummaryExport(OrderExportViewModel orderExportVM)
+        {
+            List<OrderHeader> orderHeaderList = _db.OrderHeader
+                    .Where(p => p.OrderDate >= orderExportVM.startDate && p.OrderDate <= orderExportVM.endDate)
+                    .ToList();
+
+            List<OrderDetails> orderDetailsList = new List<OrderDetails>();
+            List<OrderDetails> individualList = new List<OrderDetails>();
+
+            foreach (var orderHeaderItem in orderHeaderList)
+            {
+                individualList = _db.OrderDetails.Where(p => p.OrderId == orderHeaderItem.Id).ToList();
+
+                foreach(var individualItem in individualList)
+                {
+                    orderDetailsList.Add(individualItem);
+                }
+            }
+
+            byte[] bytes = Encoding.ASCII.GetBytes(ConvertListToString(orderDetailsList));
+            string fileExportName = "OrderDetails_" + DateTime.Now.ToShortDateString() + "_" + DateTime.Now.ToShortTimeString() + ".csv";
+            return File(bytes, "application/text", fileExportName);
+        }
+
+        public string ConvertListToString<T>(List<T> data)
+        {
+            PropertyDescriptorCollection modelProperties = TypeDescriptor.GetProperties(typeof(T));
+            DataTable table = new DataTable();
+            foreach(PropertyDescriptor propItem in modelProperties)
+            {
+                table.Columns.Add(propItem.Name, Nullable.GetUnderlyingType(propItem.PropertyType) ?? propItem.PropertyType);
+            }
+
+            foreach(T item in data)
+            {
+                DataRow row = table.NewRow();
+                foreach(PropertyDescriptor propItem in modelProperties)
+                {
+                    row[propItem.Name] = propItem.GetValue(item) ?? DBNull.Value;
+                }
+
+                table.Rows.Add(row);
+            }
+
+            table.Columns.Remove("OrderHeader");
+            table.Columns.Remove("MenuItemId");
+            table.Columns.Remove("MenuItem");
+            table.Columns.Remove("Description");
+
+            StringBuilder sb = new StringBuilder();
+            IEnumerable<string> columnNames = table.Columns.Cast<DataColumn>().Select(col => col.ColumnName);
+
+            sb.AppendLine(string.Join(",", columnNames));
+            foreach(DataRow rowItem in table.Rows)
+            {
+                IEnumerable<string> fields = rowItem.ItemArray.Select(f => f.ToString());
+                sb.AppendLine(string.Join(",", fields));
+            }
+
+            return sb.ToString();
         }
 
     }
