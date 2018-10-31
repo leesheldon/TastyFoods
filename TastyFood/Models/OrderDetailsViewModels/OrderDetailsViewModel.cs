@@ -7,9 +7,9 @@ namespace TastyFood.Models.OrderDetailsViewModels
 {
     public class OrderDetailsViewModel
     {
-        public List<ShoppingCart> listCart { get; set; }
-
         public OrderHeader OrderHeader { get; set; }
+
+        public List<OrderDetails> OrderDetails { get; set; }
 
     }
 }

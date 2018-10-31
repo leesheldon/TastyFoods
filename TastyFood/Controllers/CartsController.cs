@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TastyFood.Data;
 using TastyFood.Models;
-using TastyFood.Models.OrderDetailsViewModels;
+using TastyFood.Models.CartDetailsViewModels;
 using TastyFood.Utility;
 
 namespace TastyFood.Controllers
@@ -17,7 +17,7 @@ namespace TastyFood.Controllers
         private readonly ApplicationDbContext _db;
 
         [BindProperty]
-        public OrderDetailsViewModel detailsCartVM { get; set; }
+        public CartDetailsViewModel detailsCartVM { get; set; }
 
         public CartsController(ApplicationDbContext db)
         {
@@ -26,7 +26,7 @@ namespace TastyFood.Controllers
 
         public IActionResult Index()
         {
-            detailsCartVM = new OrderDetailsViewModel()
+            detailsCartVM = new CartDetailsViewModel()
             {
                 OrderHeader = new OrderHeader()
             };
@@ -107,7 +107,7 @@ namespace TastyFood.Controllers
             // Restore Session to zero
             HttpContext.Session.SetInt32(SD.SessionCountCarts, 0);
 
-            return RedirectToAction("Home", "Index");
+            return RedirectToAction("Confirm", "Orders", new { orderHeaderId = orderHeader.Id });
         }
 
         public IActionResult Plus(int cartId)

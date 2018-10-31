@@ -1,0 +1,133 @@
+﻿@model List<TastyFood.Models.OrderDetailsViewModels.OrderDetailsViewModel>
+@using TastyFood.Utility
+@{
+    ViewData["Title"] = "Orders Pickup";
+}
+
+<br />
+<form method="get">
+    <div style="height: 150px; background-color: aliceblue;" class="container">
+        <h4 style="color: steelblue;">&nbsp; Search Criteria</h4>
+        <div class="col-12">
+            <div class="row" style="padding-top: 10px;">
+                <div class="col-2">
+                    Order Number
+                </div>
+                <div class="col-3">
+                    @Html.Editor("searchOrder", new { htmlAttributes = new { @id = "searchOrderId", @class = "form-control" } })
+                </div>
+                <div class="col-2"></div>
+                <div class="col-2">
+                    Phone Number
+                </div>
+                <div class="col-3">
+                    @Html.Editor("searchPhone", new { htmlAttributes = new { @id = "phone", @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="row" style="padding-top: 10px;">
+                <div class="col-2">
+                    Email
+                </div>
+                <div class="col-3">
+                    @Html.Editor("searchEmail", new { htmlAttributes = new { @id = "email", @class = "form-control" } })
+                </div>
+                <div class="col-2"></div>
+                <div class="col-2"></div>
+                <div class="col-3">
+                    <button name="submit" value="Search" type="submit" class="btn btn-primary form-control">
+                        <i class="fas fa-search"></i>Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <h3>Orders:</h3>
+    <br />
+
+    @if (Model.Count > 0)
+    {
+        @foreach (var item in Model)
+        {
+            <div class="container row">
+                <div class="col-10">
+                    @Html.Partial("_IndividualOrderDetails", item)
+                </div>
+                <div class="col-2">
+                    @if (item.OrderHeader.Status.Equals(SD.StatusReady))
+                    {
+                        <a asp-action="OrderPickupDetails" asp-route-orderId="@item.OrderHeader.Id"
+                           class="btn btn-success"><i class="fas fa-thumbs-up"></i>Pick Up Details</a>
+                    }
+                </div>
+            </div>
+
+        }
+    }
+    else
+    {
+        <p>No past orders available...</p>
+    }
+</form>
+
+
+@section scripts{
+    <script src="~/js/TypeAhead.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Search Email
+            var emailSrc = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/API/UsersAPI?type=email&query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#email').typeahead({ highlight: true, minLength: 3 },
+                {
+                    name: 'emailSrc',
+                    display: 'email',
+                    source: emailSrc
+                });
+
+
+            // Search Phone
+            var phoneSrc = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/API/UsersAPI?type=phone&query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#phone').typeahead({ highlight: true, minLength: 3 },
+            {
+                display: 'phoneNumber',
+                source: phoneSrc
+            });
+
+            // Search Order Id
+            var orderIdSrc = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/API/OrderHeaderAPI?type=searchOrderId&query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#searchOrderId').typeahead({ highlight: true, minLength: 3 },
+            {
+                display: 'id',
+                source: orderIdSrc
+            });
+
+        });
+    </script>
+
+}

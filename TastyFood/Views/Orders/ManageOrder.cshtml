@@ -1,0 +1,54 @@
+﻿@model List<TastyFood.Models.OrderDetailsViewModels.OrderDetailsViewModel>
+@using TastyFood.Utility
+@{
+    ViewData["Title"] = "Manage Orders";
+}
+
+<h2>Manage Orders</h2>
+<br />
+
+<form method="post">
+    @if (Model.Count > 0)
+    {
+        @foreach (var item in Model)
+        {
+            <div class="container row">
+                <div class="col-10">
+                    @Html.Partial("_IndividualOrderDetails", item)
+                </div>
+                <div class="col-2">
+                    @if (item.OrderHeader.Status.Equals(SD.StatusSubmitted))
+                    {
+                        <button asp-action="OrderPrepare" asp-route-orderId="@item.OrderHeader.Id"
+                                class="btn btn-primary form-control" type="submit">
+                            <i class="fas fa-check"></i>Start Cooking
+                        </button>
+                        <button asp-action="OrderCancel" asp-route-orderId="@item.OrderHeader.Id"
+                                class="btn btn-danger form-control" type="submit">
+                            <i class="fas fa-times"></i>Cancel Order
+                        </button>
+                    }
+                    else
+                    {
+                        @if (item.OrderHeader.Status.Equals(SD.StatusInProcess))
+                        {
+                            <button asp-action="OrderReady" asp-route-orderId="@item.OrderHeader.Id"
+                                    class="btn btn-success form-control" type="submit">
+                                <i class="fas fa-flag-checkered"></i>Order Prepared
+                            </button>
+                            <button asp-action="OrderCancel" asp-route-orderId="@item.OrderHeader.Id"
+                                    class="btn btn-primary form-control" type="submit">
+                                <i class="fas fa-times"></i>Cancel Order
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+            
+        }
+    }
+    else
+    {
+        <p>No past orders available...</p>
+    }
+</form>

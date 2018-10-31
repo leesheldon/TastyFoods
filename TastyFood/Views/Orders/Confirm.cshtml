@@ -1,0 +1,20 @@
+﻿@model TastyFood.Models.OrderDetailsViewModels.OrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "Confirm";
+}
+
+<h2>Order Confirmation Page</h2>
+<br />
+
+@if (Model.OrderHeader != null)
+{
+    @Html.Partial("_IndividualOrderDetails", Model)
+
+    <br />
+    <a asp-action="Index" asp-controller="Home" class="btn btn-success">Place Another Order</a>
+}
+else
+{
+    <div class="text-danger">Error... Please try again!</div>
+}

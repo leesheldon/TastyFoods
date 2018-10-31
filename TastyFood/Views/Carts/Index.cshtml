@@ -1,4 +1,4 @@
-﻿@model TastyFood.Models.OrderDetailsViewModels.OrderDetailsViewModel
+﻿@model TastyFood.Models.CartDetailsViewModels.CartDetailsViewModel
 @{
     ViewData["Title"] = "Index";
 }
@@ -78,7 +78,7 @@
                         <label class="custom-label">Pick Up Time: </label>
                     </div>
                     <div class="col-3">
-                        <input asp-for="@Model.OrderHeader.PickupTime" id="timepicker" value="" type="text" class="form-control" />
+                        <input asp-for="@Model.OrderHeader.PickupTime" id="timepicker" onkeypress="return false;" value="" type="text" class="form-control" />
                     </div>
                 </div>
                 <div class="row">

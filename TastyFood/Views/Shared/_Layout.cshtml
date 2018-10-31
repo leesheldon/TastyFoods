@@ -11,6 +11,7 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/TypeAhead.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/jquery-ui.min.css" /> <!-- Date Picker -->
         <link rel="stylesheet" href="~/css/all.min.css" /> <!-- Font Awesome -->
@@ -22,6 +23,7 @@
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/TypeAhead.css" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/jquery-ui.min.css" /> <!-- Date Picker -->
         <link rel="stylesheet" href="~/css/all.min.css" /> <!-- Font Awesome -->
@@ -38,7 +40,7 @@
 
                 @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.CustomerEndUser) || User.IsInRole(SD.ManagerUser) || User.IsInRole(SD.StaffUser))
                 {
-                    <li class="nav-item"><a class="nav-link" href="#">Order History</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-action="OrderHistory" asp-controller="Orders">Order History</a></li>
                 }
 
                 @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.ManagerUser))
@@ -72,11 +74,11 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.ManagerUser) || User.IsInRole(SD.StaffUser))
                             {
-                                <a class="dropdown-item" href="#">Manage Order</a>
+                                <a class="dropdown-item" asp-action="ManageOrder" asp-controller="Orders">Manage Order</a>
                             }                            
                             @if (User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.DelivererUser) || User.IsInRole(SD.ManagerUser) || User.IsInRole(SD.StaffUser))
                             {
-                                <a class="dropdown-item" href="#">Orders Pickup</a>
+                                <a class="dropdown-item" asp-action="OrderPickup" asp-controller="Orders">Orders Pickup</a>
                             }
                             <a class="dropdown-item" href="#">Download Order Details</a>
                         </div>
