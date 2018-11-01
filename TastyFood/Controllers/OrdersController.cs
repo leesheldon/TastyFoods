@@ -12,6 +12,7 @@ using TastyFood.Data;
 using TastyFood.Models;
 using TastyFood.Models.OrderDetailsViewModels;
 using TastyFood.Models.OrderExportViewModels;
+using TastyFood.Models.OrderListViewModels;
 using TastyFood.Utility;
 
 namespace TastyFood.Controllers
@@ -20,6 +21,7 @@ namespace TastyFood.Controllers
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private int PageSize = 2;
 
         public OrdersController(ApplicationDbContext db)
         {
@@ -45,12 +47,15 @@ namespace TastyFood.Controllers
             return View(orderDetailsVM);
         }
         
-        public IActionResult OrderHistory()
+        public IActionResult OrderHistory(int productPage = 1)
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-
-            List<OrderDetailsViewModel> orderDetailsVMList = new List<OrderDetailsViewModel>();
+            
+            OrderListViewModel orderListVM = new OrderListViewModel
+            {
+                Orders = new List<OrderDetailsViewModel>()
+            };
 
             List<OrderHeader> orderHeadersList = _db.OrderHeader
                     .Where(p => p.UserId == claim.Value)
@@ -65,10 +70,24 @@ namespace TastyFood.Controllers
                         .Where(p => p.OrderId == item.Id)
                         .ToList();
 
-                orderDetailsVMList.Add(individual);
+                orderListVM.Orders.Add(individual);
             }
 
-            return View(orderDetailsVMList);
+            var count = orderListVM.Orders.Count;
+            orderListVM.Orders = orderListVM.Orders
+                .OrderBy(p => p.OrderHeader.Id)
+                .Skip((productPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            orderListVM.PagingInfo = new PagingInfo
+            {
+                CurrentPage = productPage,
+                ItemsPerPage = PageSize,
+                TotalItems = count
+            };
+
+            return View(orderListVM);
         }
 
         [Authorize(Roles = SD.ManagerUser)]
