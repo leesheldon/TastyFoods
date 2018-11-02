@@ -42,6 +42,19 @@ namespace TastyFood
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = "348556482372418";
+                facebookOptions.AppSecret = "3bd0e35395ff5bdaa39955ef60e85183";
+            });
+
+            services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = "51622638621-j4hqblfubjiiv66jbn55306vit390o47.apps.googleusercontent.com";
+                googleOptions.ClientSecret = "K-RJ8ZLpbrsa9grs0zkrMX8s";
+            });
+
 
             // Set Culture for Date
             services.Configure<RequestLocalizationOptions>(options =>
