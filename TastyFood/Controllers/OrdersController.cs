@@ -13,6 +13,7 @@ using TastyFood.Models;
 using TastyFood.Models.OrderDetailsViewModels;
 using TastyFood.Models.OrderExportViewModels;
 using TastyFood.Models.OrderListViewModels;
+using TastyFood.Services;
 using TastyFood.Utility;
 
 namespace TastyFood.Controllers
@@ -21,11 +22,13 @@ namespace TastyFood.Controllers
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IEmailSender _emailSender;
         private int PageSize = 2;
 
-        public OrdersController(ApplicationDbContext db)
+        public OrdersController(ApplicationDbContext db, IEmailSender emailSender)
         {
             _db = db;
+            _emailSender = emailSender;
         }
 
         // Confirm GET        
@@ -43,6 +46,13 @@ namespace TastyFood.Controllers
                         .Where(p => p.OrderId == orderHeaderId)
                         .ToList()
             };
+
+            // Send Order status email to customer
+            var customerEmail = _db.Users
+                    .Where(p => p.Id == orderDetailsVM.OrderHeader.UserId)
+                    .FirstOrDefault().Email;
+
+            await _emailSender.SendOrderStatusAsync(customerEmail, orderDetailsVM.OrderHeader.Id, SD.StatusSubmitted);
 
             return View(orderDetailsVM);
         }
@@ -131,6 +141,13 @@ namespace TastyFood.Controllers
             orderHeader.Status = SD.StatusCancelled;
             await _db.SaveChangesAsync();
 
+            // Send Order status email to customer
+            var customerEmail = _db.Users
+                    .Where(p => p.Id == orderHeader.UserId)
+                    .FirstOrDefault().Email;
+
+            await _emailSender.SendOrderStatusAsync(customerEmail, orderHeader.Id, SD.StatusCancelled);
+
             return RedirectToAction("ManageOrder", "Orders");
         }
 
@@ -140,6 +157,13 @@ namespace TastyFood.Controllers
             OrderHeader orderHeader = _db.OrderHeader.Find(orderId);
             orderHeader.Status = SD.StatusReady;
             await _db.SaveChangesAsync();
+
+            // Send Order status email to customer
+            var customerEmail = _db.Users
+                    .Where(p => p.Id == orderHeader.UserId)
+                    .FirstOrDefault().Email;
+
+            await _emailSender.SendOrderStatusAsync(customerEmail, orderHeader.Id, SD.StatusReady);
 
             return RedirectToAction("ManageOrder", "Orders");
         }
